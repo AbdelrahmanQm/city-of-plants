@@ -5,23 +5,16 @@ import { useEffect, useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function HomePage() {
-  const [data, setData] = useState<any[]>([]);
-  useEffect(() => {
-    try {
-      const getData = async () => {
-        const response = await fetch(
-          "https://aq-store-api.onrender.com/fullStoreData"
-        ).then((res) => res.json());
-
-        setData(response);
-      };
-
-      getData();
-    } catch (error) {
-      console.log(error);
-    }
-  }, [data]);
+export const getServerSideProps = async () => {
+  const response = await fetch(
+    "https://aq-store-api.onrender.com/fullStoreData"
+  );
+  const data = await response.json();
+  return {
+    props: { data },
+  };
+};
+export default function HomePage({ data }: any) {
   return (
     <>
       <Head>
